@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calpiya AFA SG 25</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .product-info {
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .discount-info {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        .product-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .qty-btn:hover {
+            background: #5568d3;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .qty-display {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .cart-summary {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .cart-item-name {
+            color: #666;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .cart-discount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .cart-total {
+            border-top: 2px solid #dee2e6;
+            margin-top: 15px;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .checkout-view {
+            text-align: center;
+        }
+
+        .checkout-total {
+            font-size: 48px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 30px 0;
+        }
+
+        .checkout-items {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-cart-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        /* Settings view styles */
+        .settings-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .settings-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .settings-item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .settings-form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .settings-form-label {
+            font-size: 14px;
+            color: #666;
+            min-width: 80px;
+        }
+
+        .settings-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .discount-group {
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+            margin-top: 10px;
+        }
+
+        .discount-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calpiya AFA SG 25</h1>
+            <p>Sales Calculator</p>
+        </div>
+
+        <!-- Shopping View -->
+        <div id="shopping-view" class="content">
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be dynamically generated here -->
+            </div>
+
+            <div id="cart-summary" class="cart-summary hidden">
+                <div class="cart-title">Current Order</div>
+                <div id="cart-items"></div>
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="checkout-btn" onclick="goToCheckout()" disabled>
+                Checkout
+            </button>
+            <button class="btn btn-secondary" onclick="clearCart()">
+                🗑️ Clear
+            </button>
+            <button class="btn btn-secondary" onclick="goToSettings()">
+                ⚙️ Update Prices
+            </button>
+        </div>
+
+        <!-- Checkout View -->
+        <div id="checkout-view" class="content hidden">
+            <div class="checkout-view">
+                <h2>Order Total</h2>
+                <div class="checkout-total" id="checkout-total">$0.00</div>
+
+                <div class="checkout-items" id="checkout-items"></div>
+
+                <button class="btn btn-secondary" onclick="goBackToShopping()">
+                    Go Back
+                </button>
+                <button class="btn btn-success" onclick="startNewOrder()">
+                    Start New Order
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settings-view" class="content hidden">
+            <h2 style="margin-bottom: 20px;">Update Prices & Discounts</h2>
+            <div id="settings-grid" class="settings-grid"></div>
+            <button class="btn btn-success" onclick="saveSettings()">
+                Save Changes
+            </button>
+            <button class="btn btn-secondary" onclick="cancelSettings()">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Product definitions from catalogue.csv
+        const products = {
+            'postcard': {
+                name: 'Postcard',
+                basePrice: 4,
+                discounts: [
+                    { qty: 3, price: 10 }
+                ]
+            },
+            'long-big-paper-print': {
+                name: 'Long/Big Paper Print',
+                basePrice: 8,
+                discounts: []
+            },
+            'tarots': {
+                name: 'Tarots',
+                basePrice: 7,
+                discounts: [
+                    { qty: 2, price: 12 }
+                ]
+            },
+            'polaroid': {
+                name: 'Polaroid',
+                basePrice: 7,
+                discounts: [
+                    { qty: 2, price: 12 },
+                    { qty: 5, price: 30 }
+                ]
+            },
+            'rectangular-pvc': {
+                name: 'Rectangular PVC',
+                basePrice: 7,
+                discounts: [
+                    { qty: 2, price: 12 }
+                ]
+            },
+            'long-pvc-print': {
+                name: 'Long PVC Print',
+                basePrice: 12,
+                discounts: []
+            },
+            'frame-square-pvc-print': {
+                name: 'Frame/Square PVC Print',
+                basePrice: 6,
+                discounts: []
+            },
+            'fanbook-blue': {
+                name: 'Fanbook (Blue)',
+                basePrice: 24,
+                discounts: []
+            },
+            'fanbook-yellow': {
+                name: 'Fanbook (Yellow)',
+                basePrice: 19,
+                discounts: []
+            },
+            'fanbook-tartali': {
+                name: 'Fanbook (Tartali)',
+                basePrice: 18,
+                discounts: []
+            },
+            'cocktail-charm': {
+                name: 'Cocktail Charm',
+                basePrice: 12,
+                discounts: [
+                    { qty: 2, price: 10 }
+                ]
+            },
+            'mini-charms': {
+                name: 'Mini Charms',
+                basePrice: 5,
+                discounts: [
+                    { qty: 2, price: 8 }
+                ]
+            },
+            'gatcha-charms': {
+                name: 'Gatcha Charms',
+                basePrice: 3,
+                discounts: []
+            },
+            'enamel-pins': {
+                name: 'Enamel Pins',
+                basePrice: 9,
+                discounts: [
+                    { qty: 2, price: 16 }
+                ]
+            },
+            'cocktail-stickers': {
+                name: 'Cocktail Stickers',
+                basePrice: 3.5,
+                discounts: [
+                    { qty: 2, price: 6 }
+                ]
+            },
+            'sticker-sheets': {
+                name: 'Sticker Sheets',
+                basePrice: 6,
+                discounts: [
+                    { qty: 2, price: 10 }
+                ]
+            },
+            'tote-bag': {
+                name: 'Tote Bag',
+                basePrice: 20,
+                discounts: []
+            },
+            'acrylic-block': {
+                name: 'Acrylic Block',
+                basePrice: 16,
+                discounts: [
+                    { qty: 2, price: 30 }
+                ]
+            },
+            'wooden-pin': {
+                name: 'Wooden Pin',
+                basePrice: 8,
+                discounts: []
+            },
+            'poster': {
+                name: 'Poster',
+                basePrice: 15,
+                discounts: []
+            }
+        };
+
+        // Gift rules from gift.csv
+        const giftRules = [
+            {
+                eligibility: 'Fanbook (Blue)*1',
+                giftItem: 'Brown bag',
+                quantity: 1,
+                evaluation: 3,
+                check: (cart) => cart['fanbook-blue'] >= 1,
+                calculateQuantity: (cart) => cart['fanbook-blue']
+            },
+            {
+                eligibility: 'Fanbook (Yellow)*1',
+                giftItem: 'Brown bag',
+                quantity: 1,
+                evaluation: 3,
+                check: (cart) => cart['fanbook-yellow'] >= 1,
+                calculateQuantity: (cart) => cart['fanbook-yellow']
+            },
+            {
+                eligibility: 'Fanbook (Blue)*1 + Fanbook (Yellow)*1',
+                giftItem: 'Brown bag + gatcha',
+                quantity: 1,
+                evaluation: 6,
+                check: (cart) => cart['fanbook-blue'] >= 1 && cart['fanbook-yellow'] >= 1,
+                calculateQuantity: (cart) => Math.min(cart['fanbook-blue'], cart['fanbook-yellow'])
+            },
+            {
+                eligibility: 'Wooden Pin*1',
+                giftItem: 'Acrylic Stand',
+                quantity: 1,
+                evaluation: 1,
+                check: (cart) => cart['wooden-pin'] >= 1,
+                calculateQuantity: (cart) => cart['wooden-pin']
+            },
+            {
+                eligibility: 'Acrylic Block*1',
+                giftItem: 'Acrylic Stand',
+                quantity: 1,
+                evaluation: 1,
+                check: (cart) => cart['acrylic-block'] >= 1,
+                calculateQuantity: (cart) => cart['acrylic-block']
+            },
+            {
+                eligibility: 'Tote Bag*1',
+                giftItem: 'Print',
+                quantity: 1,
+                evaluation: 1,
+                check: (cart) => cart['tote-bag'] >= 1,
+                calculateQuantity: (cart) => cart['tote-bag']
+            },
+            {
+                eligibility: 'More than $10',
+                giftItem: 'Stamp-shape Sticker',
+                quantity: 1,
+                evaluation: 1,
+                check: (cart, total) => total > 10,
+                calculateQuantity: (cart, total) => 1
+            }
+        ];
+
+        // Cart state - initialized dynamically from products
+        let cart = {};
+        for (const productId in products) {
+            cart[productId] = 0;
+        }
+
+        function generateProductCards() {
+            const productGrid = document.getElementById('product-grid');
+            productGrid.innerHTML = '';
+
+            for (const productId in products) {
+                const product = products[productId];
+
+                // Build discount info HTML
+                let discountHTML = '';
+                if (product.discounts.length > 0) {
+                    const discountTexts = product.discounts.map(d => `${d.qty} for $${d.price.toFixed(2)}`);
+                    discountHTML = `<div class="discount-info">${discountTexts.join(' • ')}</div>`;
+                }
+
+                // Create product card
+                const cardHTML = `
+                    <div class="product-card">
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-price">$${product.basePrice.toFixed(2)} each</div>
+                            ${discountHTML}
+                        </div>
+                        <div class="product-controls">
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="changeQty('${productId}', -1)">−</button>
+                                <div class="qty-display" id="qty-${productId}">0</div>
+                                <button class="qty-btn" onclick="changeQty('${productId}', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                productGrid.innerHTML += cardHTML;
+            }
+        }
+
+        function changeQty(product, delta) {
+            cart[product] = Math.max(0, cart[product] + delta);
+            updateDisplay();
+        }
+
+        function clearCart() {
+            // Reset all quantities to 0
+            for (const productId in cart) {
+                cart[productId] = 0;
+            }
+            updateDisplay();
+        }
+
+        function calculatePrice(product, qty) {
+            if (qty === 0) return 0;
+
+            const productInfo = products[product];
+            const discounts = productInfo.discounts;
+
+            if (discounts.length === 0) {
+                return qty * productInfo.basePrice;
+            }
+
+            // Sort discounts by quantity (descending - largest bundles first for greedy approach)
+            const sortedDiscounts = [...discounts].sort((a, b) => b.qty - a.qty);
+
+            // Greedy recursive approach to find minimum price
+            function calculateMinPrice(remainingQty) {
+                if (remainingQty === 0) return 0;
+
+                // Base case: no discount applied
+                let minPrice = remainingQty * productInfo.basePrice;
+
+                // Try each discount and recursively calculate the best price
+                for (const discount of sortedDiscounts) {
+                    if (remainingQty >= discount.qty) {
+                        // Apply this discount once and recursively calculate the rest
+                        const bundlePrice = discount.price + calculateMinPrice(remainingQty - discount.qty);
+                        minPrice = Math.min(minPrice, bundlePrice);
+                    }
+                }
+
+                return minPrice;
+            }
+
+            return calculateMinPrice(qty);
+        }
+
+        function updateDisplay() {
+            // Update quantity displays
+            for (const product in cart) {
+                document.getElementById(`qty-${product}`).textContent = cart[product];
+            }
+
+            // Calculate totals
+            let total = 0;
+            let hasItems = false;
+            let cartHTML = '';
+
+            for (const product in cart) {
+                const qty = cart[product];
+                if (qty > 0) {
+                    hasItems = true;
+                    const price = calculatePrice(product, qty);
+                    total += price;
+
+                    const productInfo = products[product];
+                    const regularPrice = qty * productInfo.basePrice;
+                    const savings = regularPrice - price;
+
+                    cartHTML += `
+                        <div class="cart-item">
+                            <span class="cart-item-name">${productInfo.name} × ${qty}</span>
+                            <span class="cart-item-price">$${price.toFixed(2)}</span>
+                        </div>
+                    `;
+
+                    if (savings > 0) {
+                        cartHTML += `
+                            <div class="cart-item">
+                                <span class="cart-item-name" style="padding-left: 15px;">Discount applied</span>
+                                <span class="cart-discount">-$${savings.toFixed(2)}</span>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            // Update cart summary
+            const cartSummary = document.getElementById('cart-summary');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            if (hasItems) {
+                cartSummary.classList.remove('hidden');
+                cartItems.innerHTML = cartHTML;
+                cartTotal.textContent = `$${total.toFixed(2)}`;
+                checkoutBtn.disabled = false;
+            } else {
+                cartSummary.classList.add('hidden');
+                checkoutBtn.disabled = true;
+            }
+        }
+
+        function evaluateGifts(total) {
+            const applicableGifts = [];
+
+            // Sort rules by evaluation first (highest priority first)
+            const sortedRules = [...giftRules].sort((a, b) => b.evaluation - a.evaluation);
+
+            // Track remaining items (copy of cart)
+            const remainingCart = { ...cart };
+
+            for (const rule of sortedRules) {
+                if (rule.check(remainingCart, total)) {
+                    const timesMet = rule.calculateQuantity(remainingCart, total);
+
+                    if (timesMet > 0) {
+                        const actualQuantity = rule.quantity * timesMet;
+
+                        applicableGifts.push({
+                            ...rule,
+                            actualQuantity: actualQuantity
+                        });
+
+                        // Consume the items used by this rule
+                        // For product-based rules, subtract the quantities
+                        if (rule.eligibility.includes('Fanbook (Blue)')) {
+                            remainingCart['fanbook-blue'] = Math.max(0, remainingCart['fanbook-blue'] - timesMet);
+                        }
+                        if (rule.eligibility.includes('Fanbook (Yellow)')) {
+                            remainingCart['fanbook-yellow'] = Math.max(0, remainingCart['fanbook-yellow'] - timesMet);
+                        }
+                        if (rule.eligibility.includes('Wooden Pin')) {
+                            remainingCart['wooden-pin'] = Math.max(0, remainingCart['wooden-pin'] - timesMet);
+                        }
+                        if (rule.eligibility.includes('Acrylic Block')) {
+                            remainingCart['acrylic-block'] = Math.max(0, remainingCart['acrylic-block'] - timesMet);
+                        }
+                        if (rule.eligibility.includes('Tote Bag')) {
+                            remainingCart['tote-bag'] = Math.max(0, remainingCart['tote-bag'] - timesMet);
+                        }
+                    }
+                }
+            }
+
+            return applicableGifts;
+        }
+
+        function goToCheckout() {
+            // Calculate final total
+            let total = 0;
+            let checkoutHTML = '';
+
+            for (const product in cart) {
+                const qty = cart[product];
+                if (qty > 0) {
+                    const price = calculatePrice(product, qty);
+                    total += price;
+
+                    const productInfo = products[product];
+                    const regularPrice = qty * productInfo.basePrice;
+                    const savings = regularPrice - price;
+
+                    checkoutHTML += `
+                        <div class="cart-item">
+                            <span class="cart-item-name">${productInfo.name} × ${qty}</span>
+                            <span class="cart-item-price">$${price.toFixed(2)}</span>
+                        </div>
+                    `;
+
+                    if (savings > 0) {
+                        checkoutHTML += `
+                            <div class="cart-item">
+                                <span class="cart-item-name" style="padding-left: 15px; font-style: italic;">Bundle discount</span>
+                                <span class="cart-discount">-$${savings.toFixed(2)}</span>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            // Evaluate applicable gifts
+            const gifts = evaluateGifts(total);
+            let giftsHTML = '';
+
+            if (gifts.length > 0) {
+                giftsHTML = '<div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #dee2e6;">';
+                giftsHTML += '<div style="font-size: 18px; font-weight: 700; color: #667eea; margin-bottom: 15px;">🎁 Gifts to Include:</div>';
+
+                for (const gift of gifts) {
+                    giftsHTML += `
+                        <div class="cart-item" style="background: #f0f4ff; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                            <span class="cart-item-name" style="color: #667eea; font-weight: 600;">
+                                ${gift.giftItem} × ${gift.actualQuantity}
+                            </span>
+                            <span style="font-size: 12px; color: #999;">(${gift.eligibility})</span>
+                        </div>
+                    `;
+                }
+                giftsHTML += '</div>';
+            }
+
+            document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('checkout-items').innerHTML = checkoutHTML + giftsHTML;
+
+            // Switch views
+            document.getElementById('shopping-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.remove('hidden');
+        }
+
+        function goBackToShopping() {
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('shopping-view').classList.remove('hidden');
+        }
+
+        function startNewOrder() {
+            // Reset cart
+            for (const productId in products) {
+                cart[productId] = 0;
+            }
+
+            updateDisplay();
+
+            // Go back to shopping view
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('shopping-view').classList.remove('hidden');
+        }
+
+        function generateSettingsForm() {
+            const settingsGrid = document.getElementById('settings-grid');
+            settingsGrid.innerHTML = '';
+
+            for (const productId in products) {
+                const product = products[productId];
+
+                let discountsHTML = '';
+                // Generate inputs for existing discounts (up to 2)
+                for (let i = 0; i < 2; i++) {
+                    const discount = product.discounts[i] || { qty: '', price: '' };
+                    discountsHTML += `
+                        <div class="discount-group">
+                            <div class="discount-label">Discount ${i + 1}</div>
+                            <div class="settings-form-row">
+                                <span class="settings-form-label">Quantity:</span>
+                                <input type="number" class="settings-input"
+                                    id="discount-qty-${productId}-${i}"
+                                    value="${discount.qty}"
+                                    placeholder="e.g., 3" min="0" step="1">
+                            </div>
+                            <div class="settings-form-row">
+                                <span class="settings-form-label">Price:</span>
+                                <input type="number" class="settings-input"
+                                    id="discount-price-${productId}-${i}"
+                                    value="${discount.price}"
+                                    placeholder="e.g., 10" min="0" step="0.01">
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const itemHTML = `
+                    <div class="settings-item">
+                        <div class="settings-item-name">${product.name}</div>
+                        <div class="settings-form-row">
+                            <span class="settings-form-label">Base Price:</span>
+                            <input type="number" class="settings-input"
+                                id="price-${productId}"
+                                value="${product.basePrice}"
+                                min="0" step="0.01">
+                        </div>
+                        ${discountsHTML}
+                    </div>
+                `;
+
+                settingsGrid.innerHTML += itemHTML;
+            }
+        }
+
+        function goToSettings() {
+            generateSettingsForm();
+            document.getElementById('shopping-view').classList.add('hidden');
+            document.getElementById('settings-view').classList.remove('hidden');
+        }
+
+        function saveSettings() {
+            // Update products object from form inputs
+            for (const productId in products) {
+                const product = products[productId];
+
+                // Update base price
+                const priceInput = document.getElementById(`price-${productId}`);
+                product.basePrice = parseFloat(priceInput.value) || 0;
+
+                // Update discounts
+                product.discounts = [];
+                for (let i = 0; i < 2; i++) {
+                    const qtyInput = document.getElementById(`discount-qty-${productId}-${i}`);
+                    const priceInput = document.getElementById(`discount-price-${productId}-${i}`);
+
+                    const qty = parseInt(qtyInput.value);
+                    const price = parseFloat(priceInput.value);
+
+                    if (qty > 0 && price > 0) {
+                        product.discounts.push({ qty, price });
+                    }
+                }
+            }
+
+            // Regenerate product cards with new prices
+            generateProductCards();
+            updateDisplay();
+
+            // Go back to shopping view
+            document.getElementById('settings-view').classList.add('hidden');
+            document.getElementById('shopping-view').classList.remove('hidden');
+        }
+
+        function cancelSettings() {
+            // Go back without saving
+            document.getElementById('settings-view').classList.add('hidden');
+            document.getElementById('shopping-view').classList.remove('hidden');
+        }
+
+        // Initialize display
+        generateProductCards();
+        updateDisplay();
+    </script>
+</body>
+</html>
